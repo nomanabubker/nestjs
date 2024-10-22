@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Burger Delight</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Burger Delight</h1>
+        <nav>
+            <ul>
+                <li><a href="#menu">Menu</a></li>
+                <li><a href="#about">About Us</a></li>
+                <li><a href="#order">Order</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="menu">
+        <h2>Our Menu</h2>
+        <div class="burger">
+            <h3>The Classic Burger</h3>
+            <p>Juicy beef patty with lettuce, tomato, and our special sauce.</p>
+        </div>
+        <div class="burger">
+            <h3>Cheesy Deluxe</h3>
+            <p>Double cheese, grilled onions, and crispy bacon.</p>
+        </div>
+        <div class="burger">
+            <h3>Veggie Burger</h3>
+            <p>Grilled veggies with a tasty sauce on a fresh bun.</p>
+        </div>
+        <div class="burger">
+            <h3>Spicy Chicken Burger</h3>
+            <p>Crispy chicken patty with spicy mayo and pickles.</p>
+        </div>
+    </section>
+
+    <section id="about">
+        <h2>About Us</h2>
+        <p>At Burger Delight, we are passionate about serving the best burgers in town. Our ingredients are fresh, and our recipes are crafted with care to provide you with an unforgettable taste experience.</p>
+    </section>
+
+    <section id="order">
+        <h2>Order Your Burger</h2>
+        <form id="orderForm">
+            <label for="burger">Choose your burger:</label>
+            <select id="burger" name="burger" required>
+                <option value="">Select a burger</option>
+                <option value="classic">The Classic Burger</option>
+                <option value="cheesy">Cheesy Deluxe</option>
+                <option value="veggie">Veggie Burger</option>
+                <option value="spicy">Spicy Chicken Burger</option>
+            </select>
+
+            <label for="name">Your Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="email">Your Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="phone">Your Phone:</label>
+            <input type="tel" id="phone" name="phone" required>
+           
+            <button type="submit">Submit Order</button>
+        </form>
+        <div id="messageBox">
+            <p id="orderMessage"></p>
+            <label for="msg">Your Phone (for confirmation):</label>
+            <input type="tel" id="msg" name="messageBox" required>
+        </div>
+    </section>
+
+    <section id="contact">
+        <h2>Contact Us</h2>
+        <p>Email: info@burgerdelight.com</p>
+        <p>Phone: (123) 456-7890</p>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Burger Delight. All rights reserved.</p>
+    </footer>
+</body>
+</html>
+<script>
+    document.getElementById('orderForm').addEventListener('submit', async function(event) {
+        event.preventDefault();
+        // console.log("....event",event);
+        const burger = document.getElementById('burger').value;
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const phone = document.getElementById('phone').value;
+        console.log("....data",burger, name, email, phone);
+
+        const response = await fetch('http://localhost:3000/api/orders', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ burger, name, email, phone }),
+        });
+
+        const data = await response.json();
+
+        const messageBox = document.getElementById('messageBox');
+        messageBox.style.display = 'block';
+        messageBox.innerText = `Order submitted: ${JSON.stringify(data)}`;
+    });
+</script>
+
